@@ -41,7 +41,7 @@ def getCode():
                 begin_draw = this_line_data_index
                 newTurn = True
 
-            if this_line[this_line_index] == 0 and newTurn:
+            if this_line[this_line_data_index] == 0 and newTurn:
                 end_draw = this_line_data_index
                 lineLib.append([begin_draw,end_draw])
                 newTurn = False
