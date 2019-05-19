@@ -1,0 +1,29 @@
+[upper]
+import javax.swing.*;
+import java.awt.*;
+
+public class draw {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        JPanel panel = new JPanel(){
+
+            @Override
+            public void paint(Graphics graphics) {
+                super.paint(graphics);
+
+[end]
+[lower]
+
+            }
+
+        };
+
+        frame.add(panel);
+        frame.setVisible(true);
+        frame.setSize([size]);
+
+    }
+
+}
+[end]
+[endFile]
