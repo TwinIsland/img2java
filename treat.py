@@ -5,12 +5,14 @@ from scipy import stats
 import translate
 from skimage import transform
 
+#####################################
 imgData = cv2.imread('van.jpg',0)
+compressRate = 0.4
+#####################################
 
 imgData = np.array(imgData)
-
 shape = imgData.shape
-
+pas = p = 'unknown'
 
 def twoWayTreat():
     global imgData
@@ -52,19 +54,30 @@ def getCode():
     return code
 
 def compressImg():
-    global imgData
-    imgData = transform.rescale(imgData, [0.2,0.2])
+    global imgData,compressRate
+    imgData = transform.rescale(imgData, [compressRate,compressRate])
 
+
+def passivate():
+    count = 0
+    global imgData
+    shape = imgData.shape
+    lineLenght = shape[1]
+    for lineIndex in range(shape[0]-1):
+        for numberIndex in range(0,lineLenght-6):
+            thisFive = list(imgData[lineIndex,numberIndex:numberIndex+5])
+            if thisFive == [0,255,255,255,255]:
+                count += 1
+                thisFive[0] =255
+                imgData[lineIndex,numberIndex:numberIndex+5] = thisFive
+    return 'passivate rate: ' + str(count/(shape[0]*shape[1])) + '%'
 
 
 twoWayTreat()
-
 compressImg()
-
+pas = passivate()
 debugImg()
-
 p = getCode()
-
 translate.setSize(imgData.shape)
 
 with open('draw.java','w') as f:
@@ -72,4 +85,14 @@ with open('draw.java','w') as f:
     f.write(p)
     f.write(translate.lower_code)
 
+try:
+    print('==================')
+    print('compressRate: ' + str(compressRate))
+    print('passivateRate: ' + str(pas))
+    print('size: ' + str(imgData.shape))
+    print('==================')
+except Exception:
+    print('cannot print out the post-info!')
+
 f.close()
+
